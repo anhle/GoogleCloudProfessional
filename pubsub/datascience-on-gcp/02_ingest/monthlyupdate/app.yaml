@@ -1,0 +1,23 @@
+runtime: python
+env: flex
+entrypoint: gunicorn -b :$PORT ingestapp:app --timeout 120
+
+runtime_config:
+  python_version: 3
+
+service: flights
+manual_scaling:
+  instances: 1
+
+#[START env]
+env_variables:
+    CLOUD_STORAGE_BUCKET: qwiklabs-gcp-00-45ecf7eb8364
+#[END env]
+
+readiness_check:
+  path: "/"
+  check_interval_sec: 5
+  timeout_sec: 4
+  failure_threshold: 2
+  success_threshold: 2
+  app_start_timeout_sec: 900
